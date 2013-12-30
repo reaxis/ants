@@ -17,7 +17,6 @@ Tested in Processing 2.1.
 
 ## To do
 
-- save frame filename should use time instead of random()
 - load maps from images
   - test with single and double bridge setups
 - optimize number of ants vs. pheromone evaporation vs. pheromone drop
@@ -30,6 +29,7 @@ Tested in Processing 2.1.
 - get it to github
 - get it to p5js
 - UI library to tweak algorithm variables during runtime
+  - <http://www.sojamo.de/libraries/controlP5/>
   - be able to draw (add/erase) terrain during runtime
   - be able to erase pheromones?
 - move grid/terrain into its own class (Terrain)

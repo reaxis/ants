@@ -11,7 +11,7 @@ int shortestRoute;
 float highest;
 
 void setup() {
-  size(800, 450, OPENGL);
+  size(800, 450, OPENGL); // 16:9
   
   initialize();
 }
@@ -114,7 +114,7 @@ void keyPressed() {
   } else if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
   } else if (keyCode == 83) { // S: save screenshot
-    save("ants-" + random(1) + ".png");
+    save("ants_" + nf(year(), 4) + nf(month(), 2) + nf(day(), 2) + "_" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + ".png");
   } else if (key == 61) { // +: increase speed
     speed++;
   } else if (key == 45) { // -: decrease speed
