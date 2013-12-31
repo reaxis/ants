@@ -22,19 +22,12 @@ class Colony {
     }
   }
   
-  void draw() {
-    //pushMatrix();
-    
-    // to draw ants in center of grid cells 
-    //translate((resolution-1)/2, (resolution-1)/2);
-    
+  void draw() {    
     // draw ants
     for (int i = 0; i < ants.length; i++) {
       ants[i].draw();
     }
-    
-    //popMatrix();
-    
+
     // draw nest
     noStroke();
     fill(0, 255, 0);

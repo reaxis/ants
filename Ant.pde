@@ -1,6 +1,4 @@
 class Ant {
-  // float froIncrement = 0.3;
-  
   IntList x = new IntList();
   IntList y = new IntList();
   
@@ -116,9 +114,6 @@ class Ant {
         }
       }
       
-      // grid[x.get(x.size()-1)][y.get(y.size()-1)] += increment;
-      // grid[x.get(x.size()-1)][y.get(y.size()-1)] += toIncrement;
-      
       removeLoops();
       
       if (dist(x.get(x.size()-1), y.get(y.size()-1), terrain.foodX, terrain.foodY) < 5) {
@@ -150,21 +145,30 @@ class Ant {
   void draw() {
     
     // draw trail
-    /* stroke(255, 100);
-    for (int i = 1; i < x.size(); i++) {
-      line(x.get(i-1)*px, y.get(i-1)*px, x.get(i)*px, y.get(i)*px);
-    }
-    noStroke(); */
+    stroke(255, 50);
+    noFill();
     
-    fill(255);
+    beginShape();
+    for (int i = x.size()-1; i > 0 && i > x.size()-4; i--) {      
+      vertex(x.get(i)*resolution + (resolution-1)/2, y.get(i)*resolution + (resolution-1)/2);
+    }
+    endShape();
+    // */
+    
     noStroke();
     
-    if (drawAnts) {
-      if (foundFood) {
-        rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
-      } else {
-        rect(x.get(x.size()-1)*resolution + (resolution-1)/2, y.get(y.size()-1)*resolution + (resolution-1)/2, 1, 1);
-      }
+    if (foundFood) {
+      fill(0);
+      rect(x.get(x.size()-1)*resolution + (resolution-5)/2, y.get(y.size()-1)*resolution + (resolution-5)/2, 5, 5);
+      
+      fill(255);
+      rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
+    } else {
+      fill(0);
+      rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
+      
+      fill(255);
+      rect(x.get(x.size()-1)*resolution + (resolution-1)/2, y.get(y.size()-1)*resolution + (resolution-1)/2, 1, 1);
     }
   }
 }

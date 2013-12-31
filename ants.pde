@@ -26,7 +26,7 @@ void draw() {
   
   // draw terrain and ants
   if (drawTerrain) terrain.draw();
-  colony.draw();
+  if (drawAnts) colony.draw();
  
   // draw some informative text in the upper right corner
   noStroke();
@@ -34,14 +34,12 @@ void draw() {
   textSize(12);
   textAlign(RIGHT);
   
-  text(shortestRoute, width-10, 15);
+  text(((shortestRoute < 10000000) ? shortestRoute+"" : ""), width-10, 15);
   text(round(frameRate) + "fps", width-10, 30);
   text(speed, width - 10, 45);
 }
 
 void keyPressed() {
-  println(keyCode);
-  
   if (keyCode == 82) { // R: reset
     initialize();
   } else if (keyCode == 65) { // A: toggle ant drawing
