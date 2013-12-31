@@ -2,14 +2,13 @@
 
 A [Processing](http://processing.org) sketch to visualize Ant Colony Optimization.
 
-Ants walk around randomly until they find a food source, then retrace their steps and drop pheromones on the way back. Pheromones are visualized by green trails.
+Ants walk around randomly until they find a food source, then retrace their steps and drop pheromones on the way back. Pheromones are visualized by colored trails.
 
 Tested in Processing 2.1.
 
 ### Keys
 
 - **R** reset
-- **B** ‘blur’ terrain
 - **A** toggle ant drawing
 - **S** save screenshot
 - **+** increase speed
@@ -17,6 +16,8 @@ Tested in Processing 2.1.
 
 ## To do
 
+- draw terrain into PImage or PGraphics at 1:1 and then scale with drawing
+  - as OpenGL texture?
 - load maps from images
   - test with single and double bridge setups
 - optimize number of ants vs. pheromone evaporation vs. pheromone drop
@@ -25,15 +26,11 @@ Tested in Processing 2.1.
 - don't deposit pheromones on nest
 - remove println()'s in favor of drawing text on screen
 - draw shortest route as function of time (see the convergence emerge!)
-- get it to github
 - get it to p5js
 - UI library to tweak algorithm variables during runtime
   - <http://www.sojamo.de/libraries/controlP5/>
   - be able to draw (add/erase) terrain during runtime
   - be able to erase pheromones?
-- move grid/terrain into its own class (Terrain)
-- move colony into its own class (Colony)
-  - pass Terrain reference to Colony
 - remove ant movement loops due to diagonal crossing
 - do something interesting with drawing of ant trails/memory
 

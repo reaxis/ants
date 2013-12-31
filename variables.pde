@@ -17,7 +17,7 @@ float pheromoneLimit = 30;
 // UI
 
 // pixel to grid ratio
-int px = 5;
+int resolution = 5;
 
 // ant updates per frame
 int speed = 10;
@@ -32,3 +32,4 @@ int foodY = 20;
 
 // toggle drawing of ants
 boolean drawAnts = true;
+boolean drawTerrain = true;

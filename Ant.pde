@@ -13,7 +13,7 @@ class Ant {
     y.append(ny);
   }
   
-  void move() {    
+  void move(Terrain terrain) {    
     /*
     if (age > 10000) {
       age = 0;
@@ -29,9 +29,9 @@ class Ant {
     if (foundFood) {
       age = 0;
       
-      grid[x.get(x.size()-1)][y.get(y.size()-1)] += pheromoneIncrement;
-      
       if (x.size() > 1) {
+        terrain.grid[x.get(x.size()-1)][y.get(y.size()-1)] += pheromoneIncrement;
+        
         x.remove(x.size()-1);
         y.remove(y.size()-1);
       } else {
@@ -49,18 +49,18 @@ class Ant {
       // !!! REFACTOR
       
       // probabilities are based on pheromones on grid
-      probabilities[0] = grid[lastX][lastY-1]; // up
-      probabilities[1] = grid[lastX+1][lastY]; // right
-      probabilities[2] = grid[lastX][lastY+1]; // down
-      probabilities[3] = grid[lastX-1][lastY]; // left
+      probabilities[0] = terrain.grid[lastX][lastY-1]; // up
+      probabilities[1] = terrain.grid[lastX+1][lastY]; // right
+      probabilities[2] = terrain.grid[lastX][lastY+1]; // down
+      probabilities[3] = terrain.grid[lastX-1][lastY]; // left
       
       // penalty for diagonal movement
       float sqrt2 = sqrt(2);
       
-      probabilities[4] = grid[lastX-1][lastY-1] / sqrt2; // left up
-      probabilities[5] = grid[lastX+1][lastY-1] / sqrt2; // right up
-      probabilities[6] = grid[lastX+1][lastY+1] / sqrt2; // right down
-      probabilities[7] = grid[lastX-1][lastY+1] / sqrt2; // left down
+      probabilities[4] = terrain.grid[lastX-1][lastY-1] / sqrt2; // left up
+      probabilities[5] = terrain.grid[lastX+1][lastY-1] / sqrt2; // right up
+      probabilities[6] = terrain.grid[lastX+1][lastY+1] / sqrt2; // right down
+      probabilities[7] = terrain.grid[lastX-1][lastY+1] / sqrt2; // left down
       
       // !!! REFACTOR
       
@@ -121,7 +121,7 @@ class Ant {
       
       removeLoops();
       
-      if (dist(x.get(x.size()-1), y.get(y.size()-1), foodX, foodY) < 5) {
+      if (dist(x.get(x.size()-1), y.get(y.size()-1), terrain.foodX, terrain.foodY) < 5) {
         foundFood = true;
         
         if (x.size() < shortestRoute) {
@@ -156,15 +156,14 @@ class Ant {
     }
     noStroke(); */
     
+    fill(255);
+    noStroke();
     
     if (drawAnts) {
       if (foundFood) {
-        fill(128);
-        noStroke();
-        ellipse(x.get(x.size()-1)*px, y.get(y.size()-1)*px, 3, 3);
+        rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
       } else {
-        stroke(128);
-        point((int)(x.get(x.size()-1)*px), (int)(y.get(y.size()-1)*px));
+        rect(x.get(x.size()-1)*resolution + (resolution-1)/2, y.get(y.size()-1)*resolution + (resolution-1)/2, 1, 1);
       }
     }
   }

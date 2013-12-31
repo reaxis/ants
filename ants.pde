@@ -1,120 +1,53 @@
-// the grid, containing terrain and pheromone data
-float[][] grid;
+Colony colony;
+Terrain terrain;
 
-// the ants
-Ant[] colony;
-
-// length of shortest route
+// length of current shortest route
 int shortestRoute;
-
-// highest amount of pheromone on a grid cell
-float highest;
 
 void setup() {
   size(800, 450, OPENGL); // 16:9
   
+  // set up terrain and ants
   initialize();
 }
 
 void draw() {
   background(0);
-  
-  // !!! UPDATE FUNCTIONS (separate thread?)
-  
-  // update ants  
+    
+  // move ants  
   for (int n = 0; n < speed; n++) {
-    for (int i = 0; i < colony.length; i++) { 
-      colony[i].move();
-    }
+    colony.update();
   }
   
-  // update grid and find out highest pheromone value
-  
-  highest = 3;
-  
-  for (int x = 0; x < grid.length; x++) {
-    for (int y = 0; y < grid[x].length; y++) {
-      grid[x][y] *= pow(evaporationRate, speed); // evaporate as many steps as ants updated
-      
-      /*
-      // limit amount of pheromones
-      if (grid[x][y] > pheromoneLimit) {
-        grid[x][y] = pheromoneLimit;
-      }
-      */
-      
-      // !!! THIS SHOULD NOT BE NECESSARY IF NO PHEROMONES ARE DROPPED ON NEST
-      
-      // don't check nest
-      if (x != nestX && y != nestY && grid[x][y] > highest) {
-        highest = grid[x][y];
-      }
-      
-      // evaporation shouldn't happen below value of 1
-      if (grid[x][y] > 0 && grid[x][y] < 1) {
-        grid[x][y] = 1;
-      }
-    }
+  // evaporate pheromones
+  for (int n = 0; n < speed; n++) {
+    terrain.evaporate();
   }
   
-  // !!! DRAWING FUNCTIONS
-  
-  noStroke();
-  
-  // draw the grid  
-  for (int x = 0; x < grid.length; x++) {
-    for (int y = 0; y < grid[x].length; y++) {
-      // fill(grid[x][y] == 0 ? #442200 : #aa6600); // earth tones
-      
-      if (mousePressed) {
-        fill(grid[x][y] == 0 ? #333333 : #000000); // black background
-        rect(x*px, y*px, px, px);
-        fill(0, 255, 0, map(grid[x][y], 1, highest, 0, 255)); // green as a function of pheromones
-        rect(x*px, y*px, px, px);
-      } else {
-        fill(grid[x][y] == 0 ? #000000 : colorScale(map(grid[x][y], 1, highest, 0, 1))); // black background
-        rect(x*px, y*px, px, px);
-      }
-    }
-  }
-  
-  // draw nest
-  fill(#ff0000);
-  rect(nestX*px, nestY*px, px, px);
-  
-  // draw food
-  fill(0, 0, 255, 50);
-  ellipse(foodX*px, foodY*px, 2*px*5, 2*px*5);
-  
-  pushMatrix();
-    
-    // to draw ants in center of grid cells 
-    translate(px/2, px/2);
-    
-    // draw ants
-    for (int i = 0; i < colony.length; i++) {
-      colony[i].draw();
-    }
-    
-  popMatrix();
-  
+  // draw terrain and ants
+  if (drawTerrain) terrain.draw();
+  colony.draw();
+ 
   // draw some informative text in the upper right corner
-  
+  noStroke();
   fill(255);
   textSize(12);
   textAlign(RIGHT);
+  
   text(shortestRoute, width-10, 15);
   text(round(frameRate) + "fps", width-10, 30);
   text(speed, width - 10, 45);
 }
 
-void keyPressed() {  
+void keyPressed() {
+  println(keyCode);
+  
   if (keyCode == 82) { // R: reset
     initialize();
-  } else if (keyCode == 66) { // B: blur terrain
-    blurGrid();
   } else if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
+  } else if (keyCode == 84) {
+    drawTerrain = !drawTerrain;
   } else if (keyCode == 83) { // S: save screenshot
     String filename = "ants_" + nf(year(), 4) + nf(month(), 2) + nf(day(), 2) + "_" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + ".png";
     save(filename);
@@ -128,8 +61,8 @@ void keyPressed() {
 
 void mousePressed() {
   if (keyPressed) {    
-    foodX = mouseX/px;
-    foodY = mouseY/px;
+    terrain.foodX = mouseX/resolution;
+    terrain.foodY = mouseY/resolution;
     
     // reset shortest route
     shortestRoute = 10000000;
