@@ -30,10 +30,10 @@ void draw() {
   
   // update grid and find out highest pheromone value
   
-  highest = 1;
+  highest = 3;
   
   for (int x = 0; x < grid.length; x++) {
-    for (int y = 0; y < grid[x].length; y++) {      
+    for (int y = 0; y < grid[x].length; y++) {
       grid[x][y] *= pow(evaporationRate, speed); // evaporate as many steps as ants updated
       
       /*
@@ -63,15 +63,18 @@ void draw() {
   
   // draw the grid  
   for (int x = 0; x < grid.length; x++) {
-    for (int y = 0; y < grid[x].length; y++) {      
+    for (int y = 0; y < grid[x].length; y++) {
       // fill(grid[x][y] == 0 ? #442200 : #aa6600); // earth tones
-      fill(grid[x][y] == 0 ? #333333 : #000000); // black background
       
-      rect(x*px, y*px, px, px);
-      
-      fill(0, 255, 0, map(grid[x][y], 1, highest, 0, 255)); // green as a function of pheromones
-      
-      rect(x*px, y*px, px, px);
+      if (mousePressed) {
+        fill(grid[x][y] == 0 ? #333333 : #000000); // black background
+        rect(x*px, y*px, px, px);
+        fill(0, 255, 0, map(grid[x][y], 1, highest, 0, 255)); // green as a function of pheromones
+        rect(x*px, y*px, px, px);
+      } else {
+        fill(grid[x][y] == 0 ? #000000 : colorScale(map(grid[x][y], 1, highest, 0, 1))); // black background
+        rect(x*px, y*px, px, px);
+      }
     }
   }
   
@@ -101,7 +104,6 @@ void draw() {
   textSize(12);
   textAlign(RIGHT);
   text(shortestRoute, width-10, 15);
-  // text((int)(mouseX/px) + " " + (int)(mouseY/px), width-10, 30);
   text(round(frameRate) + "fps", width-10, 30);
   text(speed, width - 10, 45);
 }
@@ -114,7 +116,9 @@ void keyPressed() {
   } else if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
   } else if (keyCode == 83) { // S: save screenshot
-    save("ants_" + nf(year(), 4) + nf(month(), 2) + nf(day(), 2) + "_" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + ".png");
+    String filename = "ants_" + nf(year(), 4) + nf(month(), 2) + nf(day(), 2) + "_" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + ".png";
+    save(filename);
+    println("screenshot saved: " + filename);
   } else if (key == 61) { // +: increase speed
     speed++;
   } else if (key == 45) { // -: decrease speed
@@ -123,9 +127,7 @@ void keyPressed() {
 }
 
 void mousePressed() {
-  if (keyPressed) {
-    println(keyCode);
-    
+  if (keyPressed) {    
     foodX = mouseX/px;
     foodY = mouseY/px;
     

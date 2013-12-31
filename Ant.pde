@@ -126,7 +126,6 @@ class Ant {
         
         if (x.size() < shortestRoute) {
           shortestRoute = x.size();
-          println(shortestRoute);
         }
       }
     }
@@ -151,20 +150,20 @@ class Ant {
   void draw() {
     
     // draw trail
-    stroke(255, 100);
+    /* stroke(255, 100);
     for (int i = 1; i < x.size(); i++) {
       line(x.get(i-1)*px, y.get(i-1)*px, x.get(i)*px, y.get(i)*px);
     }
-    noStroke();
+    noStroke(); */
     
     
     if (drawAnts) {
       if (foundFood) {
-        fill(255);
+        fill(128);
         noStroke();
         ellipse(x.get(x.size()-1)*px, y.get(y.size()-1)*px, 3, 3);
       } else {
-        stroke(255);
+        stroke(128);
         point((int)(x.get(x.size()-1)*px), (int)(y.get(y.size()-1)*px));
       }
     }

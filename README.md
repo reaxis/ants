@@ -20,7 +20,6 @@ Tested in Processing 2.1.
 - load maps from images
   - test with single and double bridge setups
 - optimize number of ants vs. pheromone evaporation vs. pheromone drop
-- broader color range for pheromone levels (color gradient library?)
 - comments!
 - optimize stuff like sqrt(2)
 - don't deposit pheromones on nest
