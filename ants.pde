@@ -42,9 +42,11 @@ void draw() {
 void keyPressed() {
   if (keyCode == 82) { // R: reset
     initialize();
+  } else if (keyCode == 66) { // B: erode terrain
+    terrain.erode();
   } else if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
-  } else if (keyCode == 84) {
+  } else if (keyCode == 84) { // T: toggle terrain drawing
     drawTerrain = !drawTerrain;
   } else if (keyCode == 83) { // S: save screenshot
     String filename = "ants_" + nf(year(), 4) + nf(month(), 2) + nf(day(), 2) + "_" + nf(hour(), 2) + nf(minute(), 2) + nf(second(), 2) + ".png";
@@ -59,8 +61,8 @@ void keyPressed() {
 
 void mousePressed() {
   if (keyPressed) {    
-    terrain.foodX = mouseX/resolution;
-    terrain.foodY = mouseY/resolution;
+    terrain.foodX = mouseX/terrain.resolution;
+    terrain.foodY = mouseY/terrain.resolution;
     
     // reset shortest route
     shortestRoute = 10000000;

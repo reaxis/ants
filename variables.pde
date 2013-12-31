@@ -22,14 +22,6 @@ int resolution = 5;
 // ant updates per frame
 int speed = 10;
 
-// location of the nest
-int nestX = 10;
-int nestY = 10;
-
-// initial location of the food
-int foodX = 20;
-int foodY = 20;
-
 // toggle drawing of ants
 boolean drawAnts = true;
 boolean drawTerrain = true;

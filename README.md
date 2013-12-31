@@ -16,12 +16,9 @@ Tested in Processing 2.1.
 
 ## To do
 
-- load maps from images
-  - test with single and double bridge setups
 - optimize number of ants vs. pheromone evaporation vs. pheromone drop
 - comments!
 - optimize stuff like sqrt(2)
-- don't deposit pheromones on nest
 - remove println()'s in favor of drawing text on screen
 - draw shortest route as function of time (see the convergence emerge!)
 - get it to p5js

@@ -19,8 +19,8 @@ class Ant {
       x.clear();
       y.clear();
       
-      x.append(nestX);
-      y.append(nestY);
+      x.append(terrain.nestX);
+      y.append(terrain.nestY);
     }
     */
     
@@ -83,7 +83,9 @@ class Ant {
       if (total == 0) {
         x.append(x.get(x.size()-2));
         y.append(y.get(y.size()-2));
-      } else {
+      } else {      
+        removeLoops();
+        
         float rand = random(total);
         float shot = 0;
         int choice = 0;
@@ -112,9 +114,7 @@ class Ant {
         } else if (choice == 2 || choice == 6 || choice == 7) {
           y.append(lastY+1);
         }
-      }
-      
-      removeLoops();
+      }      
       
       if (dist(x.get(x.size()-1), y.get(y.size()-1), terrain.foodX, terrain.foodY) < 5) {
         foundFood = true;
@@ -142,7 +142,7 @@ class Ant {
     }
   }
   
-  void draw() {
+  void draw(Terrain terrain) {
     
     // draw trail
     stroke(255, 50);
@@ -150,7 +150,7 @@ class Ant {
     
     beginShape();
     for (int i = x.size()-1; i > 0 && i > x.size()-4; i--) {      
-      vertex(x.get(i)*resolution + (resolution-1)/2, y.get(i)*resolution + (resolution-1)/2);
+      vertex(x.get(i)*terrain.resolution + (terrain.resolution-1)/2, y.get(i)*terrain.resolution + (terrain.resolution-1)/2);
     }
     endShape();
     // */
@@ -159,16 +159,16 @@ class Ant {
     
     if (foundFood) {
       fill(0);
-      rect(x.get(x.size()-1)*resolution + (resolution-5)/2, y.get(y.size()-1)*resolution + (resolution-5)/2, 5, 5);
+      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-5)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-5)/2, 5, 5);
       
       fill(255);
-      rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
+      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-3)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-3)/2, 3, 3);
     } else {
       fill(0);
-      rect(x.get(x.size()-1)*resolution + (resolution-3)/2, y.get(y.size()-1)*resolution + (resolution-3)/2, 3, 3);
+      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-3)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-3)/2, 3, 3);
       
       fill(255);
-      rect(x.get(x.size()-1)*resolution + (resolution-1)/2, y.get(y.size()-1)*resolution + (resolution-1)/2, 1, 1);
+      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-1)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-1)/2, 1, 1);
     }
   }
 }
