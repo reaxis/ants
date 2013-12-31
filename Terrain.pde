@@ -3,6 +3,7 @@ class Terrain {
   float noiseThreshold = 0.43;
   float[][] grid;
   int resolution, foodX, foodY;
+  PImage img, imgScaled;
   
   Terrain(int _resolution, int _foodX, int _foodY) {
     resolution = _resolution;
@@ -41,20 +42,30 @@ class Terrain {
     for (int i = 0; i < 10; i++) {
       erode();
     }
+    
+    img = createImage(grid.length*resolution, grid[0].length*resolution, RGB);
   }
   
   void draw() {
-    noStroke();
+    img.loadPixels();
     
     float highest = highestValue();
   
     // draw the grid
     for (int x = 0; x < grid.length; x++) {
-      for (int y = 0; y < grid[x].length; y++) {        
-        fill(grid[x][y] == 0 ? #222222 : colorScale(map(grid[x][y], 1, highest, 0, 1)));
-        rect(x*resolution, y*resolution, resolution, resolution);
+      for (int y = 0; y < grid[x].length; y++) {
+        color c = grid[x][y] == 0 ? #222222 : colorScale(map(grid[x][y], 1, highest, 0, 1));
+        
+        for (int i = 0; i < resolution; i++) {
+          for (int j = 0; j < resolution; j++) {            
+            img.pixels[y*img.width*resolution + x*resolution + i + j*grid.length*resolution] = c;
+          }
+        }
       }
     }
+    
+    img.updatePixels();
+    image(img, 0, 0);
     
     // draw food
     fill(255, 0, 0, 50);

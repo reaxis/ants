@@ -16,8 +16,6 @@ Tested in Processing 2.1.
 
 ## To do
 
-- draw terrain into PImage or PGraphics at 1:1 and then scale with drawing
-  - as OpenGL texture?
 - load maps from images
   - test with single and double bridge setups
 - optimize number of ants vs. pheromone evaporation vs. pheromone drop
