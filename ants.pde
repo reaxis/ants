@@ -63,10 +63,10 @@ void draw() {
 }
 
 void keyPressed() {
-  if (keyCode == 82) { // R: reset
-    initialize();
-  } else if (keyCode == 65) { // A: toggle ant drawing
+  if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
+  } else if (keyCode == 78) { // N: start new
+    initialize();
   } else if (keyCode == 84) { // T: toggle terrain drawing
     drawTerrain = !drawTerrain;
   } else if (keyCode == 83) { // S: save screenshot

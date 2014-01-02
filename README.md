@@ -10,8 +10,8 @@ Tested in Processing 2.1.
 
 ### Keys
 
-- **R** reset
 - **A** toggle ant drawing
+- **N** start new
 - **T** toggle terrain drawing
 - **S** save screenshot
 - **+** increase speed
