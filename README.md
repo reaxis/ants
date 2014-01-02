@@ -10,6 +10,7 @@ Tested in Processing 2.1.
 
 - **R** reset
 - **A** toggle ant drawing
+- **T** toggle terrain drawing
 - **S** save screenshot
 - **+** increase speed
 - **-** decrease speed
@@ -26,6 +27,7 @@ Tested in Processing 2.1.
   - <http://www.sojamo.de/libraries/controlP5/>
   - be able to draw (add/erase) terrain during runtime
   - be able to erase pheromones?
+  - sliders/buttons for changing evaporation rate, number of ants, etc.
 - remove ant movement loops due to diagonal crossing
 - do something interesting with drawing of ant trails/memory
 

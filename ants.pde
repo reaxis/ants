@@ -11,9 +11,26 @@ void setup() {
   initialize();
 }
 
-void draw() {
-  background(0);
-    
+void initialize() {
+  // reseed Perlin noise
+  noiseSeed((int)random(10000));
+  
+  shortestRoute = 10000000;
+
+  // terrain = new Terrain(resolution);
+  
+  // terrain = new Terrain(resolution, "extended_double_bridge.png");
+  // terrain = new Terrain(resolution, "split.png");
+  // terrain = new Terrain(resolution, "extra_narrow_path.png");
+  // terrain = new Terrain(resolution, "narrow_extended_double_bridge.png");
+  // terrain = new Terrain(resolution, "random_paths.png");
+  // terrain = new Terrain(resolution, "grid.png");
+  terrain = new Terrain(resolution, "open.png");
+  
+  colony = new Colony(numberOfAnts, terrain);
+}
+
+void update() {
   // move ants  
   for (int n = 0; n < speed; n++) {
     colony.update();
@@ -23,6 +40,12 @@ void draw() {
   for (int n = 0; n < speed; n++) {
     terrain.evaporate();
   }
+}
+
+void draw() {
+  background(0);
+    
+  update();
   
   // draw terrain and ants
   if (drawTerrain) terrain.draw();
@@ -34,7 +57,7 @@ void draw() {
   textSize(12);
   textAlign(RIGHT);
   
-  text(((shortestRoute < 10000000) ? shortestRoute+"" : ""), width-10, 15);
+  text(shortestRoute < 10000000 ? shortestRoute+"" : "", width-10, 15);
   text(round(frameRate) + "fps", width-10, 30);
   text(speed, width - 10, 45);
 }
@@ -42,8 +65,6 @@ void draw() {
 void keyPressed() {
   if (keyCode == 82) { // R: reset
     initialize();
-  } else if (keyCode == 66) { // B: erode terrain
-    terrain.erode();
   } else if (keyCode == 65) { // A: toggle ant drawing
     drawAnts = !drawAnts;
   } else if (keyCode == 84) { // T: toggle terrain drawing
@@ -67,8 +88,4 @@ void mousePressed() {
     // reset shortest route
     shortestRoute = 10000000;
   }
-  
-  // !!! INCORPORATE THIS INTO TEXT DRAWING ON SCREEN!!!
-  
-  // println((int)(mouseX/px), (int)(mouseY/px), grid[(int)(mouseX/px)][(int)(mouseY/px)], " max: ", highest, " shortest ", shortestRoute);
 }

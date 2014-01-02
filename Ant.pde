@@ -52,13 +52,11 @@ class Ant {
       probabilities[2] = terrain.grid[lastX][lastY+1]; // down
       probabilities[3] = terrain.grid[lastX-1][lastY]; // left
       
-      // penalty for diagonal movement
-      float sqrt2 = sqrt(2);
-      
-      probabilities[4] = terrain.grid[lastX-1][lastY-1] / sqrt2; // left up
-      probabilities[5] = terrain.grid[lastX+1][lastY-1] / sqrt2; // right up
-      probabilities[6] = terrain.grid[lastX+1][lastY+1] / sqrt2; // right down
-      probabilities[7] = terrain.grid[lastX-1][lastY+1] / sqrt2; // left down
+      // penalty for diagonal movement      
+      probabilities[4] = terrain.grid[lastX-1][lastY-1] / SQRT2; // left up
+      probabilities[5] = terrain.grid[lastX+1][lastY-1] / SQRT2; // right up
+      probabilities[6] = terrain.grid[lastX+1][lastY+1] / SQRT2; // right down
+      probabilities[7] = terrain.grid[lastX-1][lastY+1] / SQRT2; // left down
       
       // !!! REFACTOR
       
@@ -126,6 +124,7 @@ class Ant {
     }
   }
   
+  // remove points in memory up until last point that is the same
   void removeLoops() {
     int lastX = x.get(x.size()-1);
     int lastY = y.get(y.size()-1);
@@ -157,18 +156,21 @@ class Ant {
     
     noStroke();
     
+    int xPos = x.get(x.size()-1)*terrain.resolution;
+    int yPos = y.get(y.size()-1)*terrain.resolution;
+    
     if (foundFood) {
       fill(0);
-      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-5)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-5)/2, 5, 5);
+      rect(xPos + (terrain.resolution-5)/2, yPos + (terrain.resolution-5)/2, 5, 5);
       
       fill(255);
-      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-3)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-3)/2, 3, 3);
+      rect(xPos + (terrain.resolution-3)/2, yPos + (terrain.resolution-3)/2, 3, 3);
     } else {
       fill(0);
-      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-3)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-3)/2, 3, 3);
+      rect(xPos + (terrain.resolution-3)/2, yPos + (terrain.resolution-3)/2, 3, 3);
       
       fill(255);
-      rect(x.get(x.size()-1)*terrain.resolution + (terrain.resolution-1)/2, y.get(y.size()-1)*terrain.resolution + (terrain.resolution-1)/2, 1, 1);
+      rect(xPos + (terrain.resolution-1)/2, yPos + (terrain.resolution-1)/2, 1, 1);
     }
   }
 }

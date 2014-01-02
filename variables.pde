@@ -25,3 +25,5 @@ int speed = 10;
 // toggle drawing of ants
 boolean drawAnts = true;
 boolean drawTerrain = true;
+
+public static final float SQRT2 = sqrt(2);
