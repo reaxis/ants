@@ -1,6 +1,6 @@
 # Ants
 
-![](https://raw.github.com/reaxis/ants/master/screenshots/ants_20131231_123709.png)
+![](https://raw.github.com/reaxis/ants/master/screenshots/animation.gif)
 
 A [Processing](http://processing.org) sketch to visualize Ant Colony Optimization.
 
