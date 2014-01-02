@@ -1,5 +1,7 @@
 # Ants
 
+![](https://raw.github.com/reaxis/ants/master/screenshots/ants_20131231_123709.png)
+
 A [Processing](http://processing.org) sketch to visualize Ant Colony Optimization.
 
 Ants walk around randomly until they find a food source, then retrace their steps and drop pheromones on the way back. Pheromones are visualized by colored trails.
