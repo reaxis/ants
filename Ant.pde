@@ -41,36 +41,30 @@ class Ant {
       int lastX = x.get(x.size()-1);
       int lastY = y.get(y.size()-1);
       
-      // probabilities for all directions
-      float[] probabilities = new float[8];
+      // surrounding cells
+      int[][] neighbors = {
+        {-1, -1}, {0, -1}, {1, -1},
+        {-1,  0},          {1,  0},
+        {-1,  1}, {0,  1}, {1,  1}
+      };
       
-      // !!! REFACTOR
+      // probabilities for all directions
+      float[] probabilities = new float[neighbors.length];
       
       // probabilities are based on pheromones on grid
-      probabilities[0] = terrain.grid[lastX][lastY-1]; // up
-      probabilities[1] = terrain.grid[lastX+1][lastY]; // right
-      probabilities[2] = terrain.grid[lastX][lastY+1]; // down
-      probabilities[3] = terrain.grid[lastX-1][lastY]; // left
-      
-      // penalty for diagonal movement      
-      probabilities[4] = terrain.grid[lastX-1][lastY-1] / SQRT2; // left up
-      probabilities[5] = terrain.grid[lastX+1][lastY-1] / SQRT2; // right up
-      probabilities[6] = terrain.grid[lastX+1][lastY+1] / SQRT2; // right down
-      probabilities[7] = terrain.grid[lastX-1][lastY+1] / SQRT2; // left down
-      
-      // !!! REFACTOR
-      
-      // don't go back to where you came from
-      if (x.size() > 1) {
-        if (x.get(x.size() - 2) == lastX && y.get(y.size() - 2) == lastY-1) probabilities[0] = 0;
-        if (x.get(x.size() - 2) == lastX+1 && y.get(y.size() - 2) == lastY) probabilities[1] = 0;
-        if (x.get(x.size() - 2) == lastX && y.get(y.size() - 2) == lastY+1) probabilities[2] = 0;
-        if (x.get(x.size() - 2) == lastX-1 && y.get(y.size() - 2) == lastY) probabilities[3] = 0;
+      for (int i = 0; i < neighbors.length; i++) {        
         
-        if (x.get(x.size() - 2) == lastX-1 && y.get(y.size() - 2) == lastY-1) probabilities[4] = 0;
-        if (x.get(x.size() - 2) == lastX+1 && y.get(y.size() - 2) == lastY-1) probabilities[5] = 0;
-        if (x.get(x.size() - 2) == lastX+1 && y.get(y.size() - 2) == lastY+1) probabilities[6] = 0;
-        if (x.get(x.size() - 2) == lastX-1 && y.get(y.size() - 2) == lastY+1) probabilities[7] = 0;
+        // penalty for diagonal movement
+        float penalty = (neighbors[i][0]*neighbors[i][1] == 0) ? 1 : SQRT2;
+        
+        probabilities[i] = terrain.grid[lastX + neighbors[i][0]][lastY + neighbors[i][1]] / penalty;
+        
+        // don't go back to where you came from
+        if (x.size() > 1) {
+          if (x.get(x.size() - 2) == lastX + neighbors[i][0] && y.get(y.size() - 2) == lastY + neighbors[i][1]) {
+            probabilities[i] = 0;
+          }
+        }
       }
       
       float total = 0;
@@ -78,10 +72,10 @@ class Ant {
         total += probabilities[i];
       }
       
-      if (total == 0) {
+      if (total == 0) { // if nowhere to go, go back
         x.append(x.get(x.size()-2));
         y.append(y.get(y.size()-2));
-      } else {      
+      } else {
         removeLoops();
         
         float rand = random(total);
@@ -97,24 +91,11 @@ class Ant {
           }
         }
         
-        if (choice == 0 || choice == 2) {
-          x.append(lastX);
-        } else if (choice == 1 || choice == 5 || choice == 6) {
-          x.append(lastX+1);
-        } else if (choice == 3 || choice == 4 || choice == 7) {
-          x.append(lastX-1);
-        }
-        
-        if (choice == 1 || choice == 3) {
-          y.append(lastY);
-        } else if (choice == 0 || choice == 4 || choice == 5) {
-          y.append(lastY-1);
-        } else if (choice == 2 || choice == 6 || choice == 7) {
-          y.append(lastY+1);
-        }
+        x.append(lastX + neighbors[choice][0]);
+        y.append(lastY + neighbors[choice][1]);
       }      
       
-      if (dist(x.get(x.size()-1), y.get(y.size()-1), terrain.foodX, terrain.foodY) < 5) {
+      if (sq(terrain.foodX - x.get(x.size()-1)) + sq(terrain.foodY - y.get(y.size()-1)) < 25) {  
         foundFood = true;
         
         if (x.size() < shortestRoute) {
