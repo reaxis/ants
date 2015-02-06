@@ -6,9 +6,17 @@ class Ant {
   
   boolean foundFood = false;
   
+  int foodTarget = -1;
+  
   Ant(int nx, int ny) {
     x.append(nx);
     y.append(ny);
+  }
+  
+  Ant(int nx, int ny, int ntarget) {
+    this(nx, ny);
+    
+    foodTarget = ntarget;
   }
   
   void move(Terrain terrain) {    
@@ -95,9 +103,21 @@ class Ant {
         y.append(lastY + neighbors[choice][1]);
       }      
       
-      for (int i = 0; i < terrain.foodX.size(); i++) {
-        if (sq(terrain.foodX.get(i) - x.get(x.size()-1)) + sq(terrain.foodY.get(i) - y.get(y.size()-1)) < 25) {  
+      if (foodTarget < 0) {
+        for (int i = 0; i < terrain.foodX.size(); i++) {
+          if (sq(terrain.foodX.get(i) - x.get(x.size()-1)) + sq(terrain.foodY.get(i) - y.get(y.size()-1)) < 25) {  
+            foundFood = true;
+            
+            if (x.size() < shortestRoute) {
+              shortestRoute = x.size();
+            }
+          }
+        }
+      } else {
+        if (sq(terrain.foodX.get(foodTarget) - x.get(x.size()-1)) + sq(terrain.foodY.get(foodTarget) - y.get(y.size()-1)) < 25) {  
           foundFood = true;
+          foodTarget += 1;
+          foodTarget %= terrain.foodX.size();
           
           if (x.size() < shortestRoute) {
             shortestRoute = x.size();

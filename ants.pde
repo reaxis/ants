@@ -20,7 +20,7 @@ void initialize() {
   
   shortestRoute = 10000000;
 
-  terrain = new Terrain(resolution, 10, 10, new int[]{width/resolution-10, width/resolution-10}, new int[]{height/resolution-10, 10});
+  // terrain = new Terrain(resolution, 10, 10, new int[]{width/resolution-10, width/resolution-10}, new int[]{height/resolution-10, 10});
   
   // terrain = new Terrain(resolution, "extended_double_bridge.png");
   // terrain = new Terrain(resolution, "split.png");
@@ -29,7 +29,7 @@ void initialize() {
   // terrain = new Terrain(resolution, "random_paths.png");
   // terrain = new Terrain(resolution, "grid.png");
   // terrain = new Terrain(resolution, "open.png");
-  // terrain = new Terrain(resolution, "open2.png");
+  terrain = new Terrain(resolution, "open2.png");
   
   colony = new Colony(numberOfAnts, terrain);
 }
