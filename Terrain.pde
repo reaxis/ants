@@ -2,16 +2,26 @@ class Terrain {
   float noiseResolution = 10;
   float noiseThreshold = 0.43;
   float[][] grid;
-  int resolution, nestX, nestY, foodX, foodY;
+  int resolution, nestX, nestY;
+  IntList foodX, foodY;
   PImage img;
   
   Terrain(int _resolution) {
-    this(_resolution, 10, 10, width/_resolution-10, height/_resolution-10);
+    resolution = _resolution;
+    
+    // initialize grid
+    grid = new float[width/resolution][height/resolution];
+    
+    // initialize food sources
+    foodX = new IntList(); 
+    foodY = new IntList();
+    
+    img = createImage(grid.length*resolution, grid[0].length*resolution, RGB);
   }
   
   Terrain(int _resolution, String filename) {
     this(_resolution);
-    
+       
     PImage map = loadImage(filename);
     map.loadPixels();
     
@@ -26,22 +36,23 @@ class Terrain {
         }
         
         if (map.pixels[y*map.width+x] == #FF0000) { // food
-          foodX = x;
-          foodY = y;
+          foodX.append(x);
+          foodY.append(y);
         }
       }
     }
   }
   
-  Terrain(int _resolution, int _nestX, int _nestY, int _foodX, int _foodY) {
-    resolution = _resolution;
+  Terrain(int _resolution, int _nestX, int _nestY, int[] _foodX, int[] _foodY) {
+    this(_resolution);
+
     nestX = _nestX;
     nestY = _nestY;
-    foodX = _foodX;
-    foodY = _foodY;
     
-    // initialize grid
-    grid = new float[width/resolution][height/resolution];
+    for (int i = 0; i < _foodX.length; i++) {
+      foodX.append(_foodX[i]);
+      foodY.append(_foodY[i]);
+    }
   
     // fill grid with solid ground
     for (int x = 0; x < grid.length; x++) {
@@ -63,8 +74,10 @@ class Terrain {
         }
         
         // open if close to food
-        if (dist(x, y, foodX, foodY) < 10) {
-          grid[x][y] = 1;
+        for (int i = 0; i < foodX.size(); i++) {
+          if (dist(x, y, foodX.get(i), foodY.get(i)) < 10) {
+            grid[x][y] = 1;
+          }
         }
       }
     }
@@ -72,8 +85,6 @@ class Terrain {
     for (int i = 0; i < 10; i++) {
       erode();
     }
-    
-    img = createImage(grid.length*resolution, grid[0].length*resolution, RGB);
   }
   
   void draw() {
@@ -98,8 +109,13 @@ class Terrain {
     image(img, 0, 0);
     
     // draw food
-    fill(255, 0, 0, 50);
-    ellipse(foodX*resolution + resolution/2, foodY*resolution + resolution/2, 10*resolution, 10*resolution);
+    for (int i = 0; i < foodX.size(); i++) {
+      fill(255, 0, 0, 50);
+      ellipse(foodX.get(i)*resolution + resolution/2, foodY.get(i)*resolution + resolution/2, 10*resolution, 10*resolution);
+
+      fill(255);
+      text(i+1, foodX.get(i)*resolution + resolution/2, foodY.get(i)*resolution + resolution/2);
+    }
   }
   
   void evaporate() {

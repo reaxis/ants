@@ -95,11 +95,13 @@ class Ant {
         y.append(lastY + neighbors[choice][1]);
       }      
       
-      if (sq(terrain.foodX - x.get(x.size()-1)) + sq(terrain.foodY - y.get(y.size()-1)) < 25) {  
-        foundFood = true;
-        
-        if (x.size() < shortestRoute) {
-          shortestRoute = x.size();
+      for (int i = 0; i < terrain.foodX.size(); i++) {
+        if (sq(terrain.foodX.get(i) - x.get(x.size()-1)) + sq(terrain.foodY.get(i) - y.get(y.size()-1)) < 25) {  
+          foundFood = true;
+          
+          if (x.size() < shortestRoute) {
+            shortestRoute = x.size();
+          }
         }
       }
     }

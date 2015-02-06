@@ -4,6 +4,9 @@ Terrain terrain;
 // length of current shortest route
 int shortestRoute;
 
+// last key pressed
+int currentKey = 0;
+
 void setup() {
   size(800, 450, OPENGL); // 16:9
   
@@ -17,7 +20,7 @@ void initialize() {
   
   shortestRoute = 10000000;
 
-  terrain = new Terrain(resolution);
+  terrain = new Terrain(resolution, 10, 10, new int[]{width/resolution-10, width/resolution-10}, new int[]{height/resolution-10, 10});
   
   // terrain = new Terrain(resolution, "extended_double_bridge.png");
   // terrain = new Terrain(resolution, "split.png");
@@ -26,6 +29,7 @@ void initialize() {
   // terrain = new Terrain(resolution, "random_paths.png");
   // terrain = new Terrain(resolution, "grid.png");
   // terrain = new Terrain(resolution, "open.png");
+  // terrain = new Terrain(resolution, "open2.png");
   
   colony = new Colony(numberOfAnts, terrain);
 }
@@ -78,12 +82,22 @@ void keyPressed() {
   } else if (key == 45) { // -: decrease speed
     speed--;
   }
+  
+  currentKey = keyCode;
+}
+
+void keyReleased() {
+  currentKey = -1; 
 }
 
 void mousePressed() {
-  if (keyPressed) {    
-    terrain.foodX = mouseX/terrain.resolution;
-    terrain.foodY = mouseY/terrain.resolution;
+  if (keyPressed) {
+    for (int i = 0; i < terrain.foodX.size(); i++) {
+      if (currentKey-49 == i) {
+        terrain.foodX.set(i, mouseX/terrain.resolution);
+        terrain.foodY.set(i, mouseY/terrain.resolution);
+      }
+    }
     
     // reset shortest route
     shortestRoute = 10000000;
