@@ -170,14 +170,16 @@ class Terrain {
         // count number of open cells
         int neighborhood = 0;
         
-        neighborhood += grid[x+1][y-1];
-        neighborhood += grid[x+1][y];
-        neighborhood += grid[x+1][y+1];
-        neighborhood += grid[x][y-1];
-        neighborhood += grid[x][y+1];
-        neighborhood += grid[x-1][y-1];
-        neighborhood += grid[x-1][y];
-        neighborhood += grid[x-1][y+1];
+        // surrounding cells
+        int[][] neighbors = {
+          {-1, -1}, {0, -1}, {1, -1},
+          {-1,  0},          {1,  0},
+          {-1,  1}, {0,  1}, {1,  1}
+        };
+        
+        for (int i = 0; i < neighbors.length; i++) {
+          neighborhood += grid[x + neighbors[i][0]][y + neighbors[i][1]];
+        }
         
         // if terrain is solid and neighbored by more than 4 open cells...
         if (grid[x][y] == 0 && neighborhood > 4) {
