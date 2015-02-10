@@ -14,7 +14,7 @@ class Colony {
  
     for (int i = 0; i < ants.length; i++) {
       // ants[i] = new Ant(terrain.nestX, terrain.nestY);
-      ants[i] = new Ant(terrain.nestX, terrain.nestY, i % 2);
+      ants[i] = new Ant(terrain.nestX, terrain.nestY, i % terrain.foodX.size());
     }
   }
   

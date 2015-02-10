@@ -1,13 +1,13 @@
 // algorithm
 
 // colony size
-int numberOfAnts = 1000;
+int numberOfAnts = 2000; // 1000
 
 // amount of pheromones dropped by ant on way back
 float pheromoneIncrement = 0.3;
 
 // rate of pheromone evaporation
-float evaporationRate = 0.9999;
+float evaporationRate = 0.9998; // 0.9999
 
 // limit of pheromone value per grid cell
 float pheromoneLimit = 30;

@@ -20,7 +20,7 @@ void initialize() {
   
   shortestRoute = 10000000;
 
-  // terrain = new Terrain(resolution, 10, 10, new int[]{width/resolution-10, width/resolution-10}, new int[]{height/resolution-10, 10});
+  terrain = new Terrain(resolution, 10, 10, new int[]{width/resolution-10, width/resolution-10}, new int[]{height/resolution-10, 10});
   
   // terrain = new Terrain(resolution, "extended_double_bridge.png");
   // terrain = new Terrain(resolution, "split.png");
@@ -29,7 +29,8 @@ void initialize() {
   // terrain = new Terrain(resolution, "random_paths.png");
   // terrain = new Terrain(resolution, "grid.png");
   // terrain = new Terrain(resolution, "open.png");
-  terrain = new Terrain(resolution, "open2.png");
+  // terrain = new Terrain(resolution, "open2.png");
+  // terrain = new Terrain(resolution, "open3.png");
   
   colony = new Colony(numberOfAnts, terrain);
 }
@@ -64,6 +65,12 @@ void draw() {
   text(shortestRoute < 10000000 ? shortestRoute+"" : "", width-10, 15);
   text(round(frameRate) + "fps", width-10, 30);
   text(speed, width - 10, 45);
+  
+  int[] targets = antsPerTarget();
+  
+  for (int i = 0; i < targets.length; i++) {
+    text((i+1) + ": " + targets[i], width - 10, 60 + 15*i);
+  }
 }
 
 void keyPressed() {
@@ -102,4 +109,18 @@ void mousePressed() {
     // reset shortest route
     shortestRoute = 10000000;
   }
+}
+
+int[] antsPerTarget() {
+  int[] targets = new int[terrain.foodX.size()];
+  
+  for (int i = 0; i < terrain.foodX.size(); i++) {
+    targets[i] = 0;
+  }
+  
+  for (int i = 0; i < colony.ants.length; i++) {
+    targets[colony.ants[i].foodTarget] += 1;
+  }
+  
+  return targets;
 }
